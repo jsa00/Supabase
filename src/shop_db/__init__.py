@@ -62,6 +62,13 @@ def demo_crud() -> None:
     print("상품 가격/재고 수정:", products.update_product(product["id"], price=6500, stock=10))
     print("주문 수량 수정:", orders.update_order_quantity(order["id"], 3))
 
+    # ---------- 반영 확인을 위한 일시정지 ----------
+    # 삭제까지 바로 진행하면 실행이 끝난 뒤 테이블에 시연 데이터가 남지 않는다.
+    # 삭제 전에 멈춰서 Supabase Table Editor 에서 실제 반영 여부를 확인할 수 있게 한다.
+    section("Supabase 반영 확인")
+    print(f"회원 id {member['id']}, 상품 id {product['id']}, 주문 id {order['id']} 가 생성/수정된 상태입니다.")
+    input("Table Editor 를 새로고침해 확인한 뒤 Enter 를 누르면 삭제를 진행합니다...")
+
     # ---------- Delete ----------
     section("4. Delete")
     # FK 때문에 삭제 순서가 중요하다.

@@ -149,5 +149,6 @@ Supabase Python SDK(supabase-py)로 3개 테이블의 CRUD를 구현했습니다
 
 `uv run shop-db` 실행 시 시연용 회원·상품·주문을 새로 만들어 **생성 → 조회 → 수정 → 삭제** 순서로 동작하고,
 마지막에 FK 순서(주문 → 회원 → 상품)대로 삭제해 기존 데이터에는 영향을 주지 않습니다.
+삭제 직전에 실행이 멈추므로, 이때 Supabase Table Editor에서 시연 데이터가 실제로 반영됐는지 확인한 뒤 Enter를 누르면 삭제가 진행됩니다.
 
 ![Python CRUD 실행 결과](docs/images/python_crud_run.png)
