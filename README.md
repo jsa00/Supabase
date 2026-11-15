@@ -118,8 +118,25 @@ uv run shop-db
 #### FOREIGN KEY
 ![FK 위반](docs/images/dml_fk.png)
 
-### 4. 트랜잭션 (COMMIT / ROLLBACK)
-<!-- TODO -->
+### 4. 트랜잭션 (`sql/03_transaction.sql`)
+주문 생성(`orders` INSERT)과 재고 차감(`products` UPDATE)을 하나의 트랜잭션으로 묶어,
+둘 다 반영되거나 둘 다 반영되지 않도록 처리합니다.
+
+#### 성공 시나리오 → COMMIT
+고양이 모자(id 1) 1개 주문: 주문 1건 추가 + 재고 3 → 2
+
+| 실행 전 (재고 3) | 트랜잭션 실행 | 실행 후 (재고 2) |
+| --- | --- | --- |
+| ![](docs/images/transaction_commit_1.png) | ![](docs/images/transaction_commit_2.png) | ![](docs/images/transaction_commit_3.png) |
+
+#### 실패 시나리오 → ROLLBACK
+재고 2개인 상품을 10개 주문 → 재고가 -8이 되어 `products_stock_check` 위반 → 트랜잭션 전체 취소
+
+| 트랜잭션 실행 (CHECK 위반 에러) | 실행 후 재고 (2 그대로) | 실행 후 주문 (10개 주문 없음, 3건 유지) |
+| --- | --- | --- |
+| ![](docs/images/transaction_rollback_1.png) | ![](docs/images/transaction_rollback_2.png) | ![](docs/images/transaction_rollback_3.jpg) |
+
+에러 앞에서 실행된 주문 INSERT까지 함께 취소되어, **주문만 들어가고 재고는 그대로인 부분 반영이 발생하지 않음**을 확인했습니다.
 
 ### 5. Python CRUD 실행 결과
 <!-- TODO: uv run shop-db 터미널 결과 + Supabase 테이블 화면 -->
