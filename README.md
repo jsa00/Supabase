@@ -138,5 +138,26 @@ uv run shop-db
 
 에러 앞에서 실행된 주문 INSERT까지 함께 취소되어, **주문만 들어가고 재고는 그대로인 부분 반영이 발생하지 않음**을 확인했습니다.
 
-### 5. Python CRUD 실행 결과
-<!-- TODO: uv run shop-db 터미널 결과 + Supabase 테이블 화면 -->
+### 5. Python CRUD 실행 결과 (`src/shop_db/`)
+Supabase Python SDK(supabase-py)로 3개 테이블의 CRUD를 구현했습니다.
+
+| 테이블 | Create | Read | Update | Delete |
+| --- | --- | --- | --- | --- |
+| members | `create_member` | `get_members`, `get_member` | `update_member` | `delete_member` |
+| products | `create_product` | `get_products`, `get_product` | `update_product` | `delete_product` |
+| orders | `create_order` | `get_orders`, `get_orders_by_member` (회원·상품 정보 JOIN) | `update_order_quantity` | `delete_order` |
+
+`uv run shop-db` 실행 시 시연용 회원·상품·주문을 새로 만들어 **생성 → 조회 → 수정 → 삭제** 순서로 동작하고,
+마지막에 FK 순서(주문 → 회원 → 상품)대로 삭제해 기존 데이터에는 영향을 주지 않습니다.
+삭제 직전에 실행이 멈추므로, 이때 Supabase Table Editor에서 시연 데이터가 실제로 반영됐는지 확인한 뒤 Enter를 누르면 삭제가 진행됩니다.
+
+#### 터미널 실행 결과
+![Python CRUD 실행 결과](docs/images/python_crud_run.png)
+
+#### Supabase 반영 확인 (삭제 전 일시정지 상태)
+Python에서 생성·수정한 시연 데이터(회원 id 9 김춘식, 상품 id 9 토끼 머리띠 6500원·10개, 주문 id 11 수량 3)가
+Supabase 테이블에 실제로 반영된 화면입니다.
+
+| members | products | orders |
+| --- | --- | --- |
+| ![](docs/images/python_crud_run_db_members.png) | ![](docs/images/python_crud_run_db_products.png) | ![](docs/images/python_crud_run_db_orders.png) |
