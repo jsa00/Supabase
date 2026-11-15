@@ -1,0 +1,20 @@
+[project]
+name = "shop-db"
+version = "0.1.0"
+description = "쇼핑몰 DB(회원·상품·주문) Supabase 연동 과제"
+readme = "README.md"
+authors = [
+    { name = "조성아", email = "agnus.oj14@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "python-dotenv>=1.2.4",
+    "supabase>=2.34.1",
+]
+
+[project.scripts]
+shop-db = "shop_db:main"
+
+[build-system]
+requires = ["uv_build>=0.12.10,<0.13.0"]
+build-backend = "uv_build"
