@@ -4,17 +4,24 @@
 -- =========================================================
 
 -- [성공 시나리오] -> COMMIT
--- TODO: 실행 전 products 재고 SELECT
+-- 실행 전 재고 확인
+SELECT * FROM products WHERE id = 1;
+
 BEGIN;
--- TODO: orders INSERT
--- TODO: products 재고 UPDATE (stock = stock - 수량)
+INSERT INTO orders (member_id, product_id, quantity) VALUES (1, 1, 1);
+UPDATE products SET stock = stock - 1 WHERE id = 1;
 COMMIT;
--- TODO: 실행 후 orders / products SELECT 로 둘 다 반영됐는지 확인
+
+-- 실행 후 주문 추가 + 재고 차감이 둘 다 반영됐는지 확인
+SELECT * FROM orders;
+SELECT * FROM products WHERE id = 1;
 
 -- [실패 시나리오] -> ROLLBACK
 -- 재고보다 많이 주문 -> CHECK (stock >= 0) 위반 -> 에러
--- BEGIN;
--- TODO: orders INSERT
--- TODO: 재고보다 큰 수량으로 UPDATE (에러 발생)
--- ROLLBACK;
--- TODO: SELECT 로 주문이 남지 않았는지(부분 반영 X) 확인
+BEGIN;
+INSERT INTO orders (member_id, product_id, quantity) VALUES (2, 1, 10);
+UPDATE products SET stock = stock - 10 WHERE id = 1;   -- stock -8 → CHECK 위반
+ROLLBACK;
+-- 에러로 트랜잭션 전체가 취소됨 -> 주문이 남지 않고 재고도 그대로인지 확인
+SELECT * FROM orders;
+SELECT * FROM products WHERE id = 1;
