@@ -151,4 +151,13 @@ Supabase Python SDK(supabase-py)로 3개 테이블의 CRUD를 구현했습니다
 마지막에 FK 순서(주문 → 회원 → 상품)대로 삭제해 기존 데이터에는 영향을 주지 않습니다.
 삭제 직전에 실행이 멈추므로, 이때 Supabase Table Editor에서 시연 데이터가 실제로 반영됐는지 확인한 뒤 Enter를 누르면 삭제가 진행됩니다.
 
+#### 터미널 실행 결과
 ![Python CRUD 실행 결과](docs/images/python_crud_run.png)
+
+#### Supabase 반영 확인 (삭제 전 일시정지 상태)
+Python에서 생성·수정한 시연 데이터(회원 id 9 김춘식, 상품 id 9 토끼 머리띠 6500원·10개, 주문 id 11 수량 3)가
+Supabase 테이블에 실제로 반영된 화면입니다.
+
+| members | products | orders |
+| --- | --- | --- |
+| ![](docs/images/python_crud_run_db_members.png) | ![](docs/images/python_crud_run_db_products.png) | ![](docs/images/python_crud_run_db_orders.png) |
