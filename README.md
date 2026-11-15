@@ -138,5 +138,16 @@ uv run shop-db
 
 에러 앞에서 실행된 주문 INSERT까지 함께 취소되어, **주문만 들어가고 재고는 그대로인 부분 반영이 발생하지 않음**을 확인했습니다.
 
-### 5. Python CRUD 실행 결과
-<!-- TODO: uv run shop-db 터미널 결과 + Supabase 테이블 화면 -->
+### 5. Python CRUD 실행 결과 (`src/shop_db/`)
+Supabase Python SDK(supabase-py)로 3개 테이블의 CRUD를 구현했습니다.
+
+| 테이블 | Create | Read | Update | Delete |
+| --- | --- | --- | --- | --- |
+| members | `create_member` | `get_members`, `get_member` | `update_member` | `delete_member` |
+| products | `create_product` | `get_products`, `get_product` | `update_product` | `delete_product` |
+| orders | `create_order` | `get_orders`, `get_orders_by_member` (회원·상품 정보 JOIN) | `update_order_quantity` | `delete_order` |
+
+`uv run shop-db` 실행 시 시연용 회원·상품·주문을 새로 만들어 **생성 → 조회 → 수정 → 삭제** 순서로 동작하고,
+마지막에 FK 순서(주문 → 회원 → 상품)대로 삭제해 기존 데이터에는 영향을 주지 않습니다.
+
+![Python CRUD 실행 결과](docs/images/python_crud_run.png)

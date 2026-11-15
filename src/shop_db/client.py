@@ -1,6 +1,6 @@
 """Supabase 클라이언트 생성 모듈.
 
-.env 의 SUPABASE_URL, SUPABASE_KEY 를 읽어 클라이언트를 하나 만들어 재사용합니다.
+.env 의 SUPABASE_URL, SUPABASE_KEY 를 읽어 클라이언트를 하나 만들어 재사용한다.
 """
 
 import os
@@ -14,7 +14,7 @@ _client: Client | None = None
 
 
 def get_client() -> Client:
-    """Supabase 클라이언트를 반환합니다. (처음 호출 때만 생성)"""
+    """Supabase 클라이언트를 반환한다. (처음 호출 때만 생성)"""
     global _client
     if _client is None:
         url = os.getenv("SUPABASE_URL")
