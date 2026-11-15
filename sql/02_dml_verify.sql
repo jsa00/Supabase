@@ -4,18 +4,42 @@
 -- =========================================================
 
 -- 1) INSERT : 샘플 데이터
--- TODO: members 2~3건, products 2~3건, orders 2~3건 INSERT
+INSERT INTO members (email, name) VALUES
+    ('kim@test.com', '김철수'),
+    ('ko@test.com', '고영희');
+
+INSERT INTO products (name, price, stock) VALUES
+    ('고양이 모자', 5800, 3),
+    ('강아지 신발', 9900, 3);
+
+INSERT INTO orders (member_id, product_id, quantity) VALUES
+    (1, 2, 1),
+    (2, 1, 2);
 
 -- 2) UPDATE : 변경 전 SELECT -> UPDATE -> 변경 후 SELECT
--- TODO
+SELECT * FROM products WHERE id = 1;          -- 변경 전 📸
+UPDATE products SET price = 15000 WHERE id = 1;
+SELECT * FROM products WHERE id = 1;          -- 변경 후 📸
 
 -- 3) DELETE : 삭제 전 SELECT -> DELETE -> 삭제 후 SELECT
--- TODO
+INSERT INTO members (email, name) VALUES
+    ('lee@test.com', '이영수');
+
+SELECT * FROM members;
+DELETE FROM members WHERE id = 3 RETURNING *;
+SELECT * FROM members;
 
 -- ---------------------------------------------------------
 -- 제약조건 위반 확인 (에러가 나는 게 정상! 에러 화면 캡처)
 -- ---------------------------------------------------------
--- TODO: CHECK 위반   - 음수 가격 상품 INSERT
--- TODO: UNIQUE 위반  - 같은 email 회원 두 번 INSERT
--- TODO: FK 위반      - 존재하지 않는 member_id 로 주문 INSERT
--- TODO: FK 위반      - 주문이 있는 회원 DELETE
+-- CHECK 위반 : 음수 가격 상품 INSERT -> products_price_check
+INSERT INTO products (name, price, stock) VALUES
+    ('고양이 목걸이', -5800, 2);
+
+-- UNIQUE 위반 : 이미 있는 email 로 UPDATE -> members_email_key
+SELECT * FROM members;
+UPDATE members SET email = 'kim@test.com' WHERE id = 2;
+
+-- FK 위반 : 주문이 있는 회원 DELETE -> orders_member_id_fkey
+SELECT * FROM members;
+DELETE FROM members WHERE id = 1 RETURNING *;

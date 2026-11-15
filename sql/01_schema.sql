@@ -33,18 +33,18 @@ CREATE TABLE orders (
 -- ALTER / DROP 연습 (채점 기준: CREATE·ALTER·DROP)
 -- ---------------------------------------------------------
 -- TODO: 주문 상태 컬럼 추가 예시
--- ALTER TABLE orders ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'ORDERED';
+ALTER TABLE orders ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'ORDERED';
 
 -- TODO: 임시 테이블을 만들었다가 DROP 해보기
--- CREATE TABLE temp_test (id INT);
--- DROP TABLE temp_test;
+CREATE TABLE temp_test (id INT);
+DROP TABLE temp_test;
 
 -- ---------------------------------------------------------
 -- 스키마 확인용 쿼리 (README 캡처용: PK / FK 확인)
 -- ---------------------------------------------------------
--- SELECT tc.table_name, kcu.column_name, tc.constraint_type
--- FROM information_schema.table_constraints tc
--- JOIN information_schema.key_column_usage kcu
---   ON tc.constraint_name = kcu.constraint_name
--- WHERE tc.table_name IN ('members', 'products', 'orders')
--- ORDER BY tc.table_name;
+SELECT tc.table_name, kcu.column_name, tc.constraint_type
+FROM information_schema.table_constraints tc
+JOIN information_schema.key_column_usage kcu
+  ON tc.constraint_name = kcu.constraint_name
+WHERE tc.table_name IN ('members', 'products', 'orders')
+ORDER BY tc.table_name;

@@ -59,20 +59,64 @@ uv run shop-db
 | product_id | BIGINT | NOT NULL, **FK → products(id)** |
 | quantity | INTEGER | NOT NULL, CHECK (quantity > 0) |
 | ordered_at | TIMESTAMPTZ | NOT NULL, DEFAULT now() |
+| status | VARCHAR(20) | NOT NULL, DEFAULT 'ORDERED' (ALTER로 추가) |
 
-<!-- TODO: ERD 또는 Table Editor 캡처 (PK/FK 보이게) -->
-<!-- ![schema](docs/images/schema.png) -->
+#### PK / FK 확인 (information_schema 조회)
+![PK FK 확인](docs/images/schema_create_table_1.png)
 
 ## 동작 캡처
 
-### 1. 테이블 생성
-<!-- TODO -->
+### 1. 테이블 생성 (`sql/01_schema.sql`)
 
-### 2. 데이터 변경 및 검증 (INSERT / UPDATE / DELETE)
-<!-- TODO: 변경 전 / 후 SELECT 캡처 -->
+#### CREATE TABLE
+| members | products | orders |
+| --- | --- | --- |
+| ![members](docs/images/schema_create_members.png) | ![products](docs/images/schema_create_products.png) | ![orders](docs/images/schema_create_orders.png) |
+
+#### ALTER / DROP
+![ALTER DROP](docs/images/schema_alter_drop.png)
+
+#### 생성된 테이블
+![테이블 목록](docs/images/schema_create_table_2.png)
+
+### 2. 데이터 변경 및 검증 (`sql/02_dml_verify.sql`)
+
+#### INSERT
+| 테이블 | 실행 | 결과 |
+| --- | --- | --- |
+| members | ![](docs/images/dml_insert_members.png) | ![](docs/images/dml_insert_members_view.png) |
+| products | ![](docs/images/dml_insert_products.png) | ![](docs/images/dml_insert_products_view.png) |
+| orders | ![](docs/images/dml_insert_orders.png) | ![](docs/images/dml_insert_orders_view.png) |
+
+주문 조회 (회원·상품 JOIN)
+
+![주문 조회](docs/images/dml_select_orders_view.png)
+
+#### UPDATE - 상품 가격 변경 (5800 → 15000)
+| 변경 전 | UPDATE 실행 | 변경 후 |
+| --- | --- | --- |
+| ![](docs/images/dml_update_products_price_1.png) | ![](docs/images/dml_update_products_price_2.png) | ![](docs/images/dml_update_products_price_3.png) |
+
+#### DELETE - 주문 없는 회원 삭제
+| 삭제 전 | DELETE 실행 | 삭제 후 |
+| --- | --- | --- |
+| ![](docs/images/dml_delete_members_1.png) | ![](docs/images/dml_delete_members_2.png) | ![](docs/images/dml_delete_members_3.png) |
 
 ### 3. 제약조건 위반 확인
-<!-- TODO: CHECK / UNIQUE / FK 위반 에러 캡처 -->
+| 제약조건 | 시도 | 결과 |
+| --- | --- | --- |
+| CHECK | 음수 가격 상품 INSERT | `products_price_check` 위반으로 거부 |
+| UNIQUE | 다른 회원의 email을 이미 있는 값으로 UPDATE | `members_email_key` 위반으로 거부 |
+| FOREIGN KEY | 주문이 있는 회원 DELETE | `orders_member_id_fkey` 위반으로 거부 |
+
+#### CHECK
+![CHECK 위반](docs/images/dml_check.png)
+
+#### UNIQUE
+![UNIQUE 위반](docs/images/dml_unique.png)
+
+#### FOREIGN KEY
+![FK 위반](docs/images/dml_fk.png)
 
 ### 4. 트랜잭션 (COMMIT / ROLLBACK)
 <!-- TODO -->
